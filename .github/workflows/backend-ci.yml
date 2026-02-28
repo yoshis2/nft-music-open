@@ -1,0 +1,101 @@
+name: Backend CI
+
+on:
+  push:
+    branches: ["main", "develop"]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    branches: ["main", "develop"]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: "1.25.0"
+          cache-dependency-path: backend/go.sum
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: latest
+          working-directory: backend
+          args: --timeout=5m --skip-dirs=docs
+
+  test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    env:
+      MYSQL_HOST: "127.0.0.1"
+      MYSQL_PORT: "3306"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: ""
+      MYSQL_DATABASE: "nft_music_test"
+      GANACHE_URL: "http://127.0.0.1:8545"
+      LOCAL_URL: "http://127.0.0.1:8545"
+
+    services:
+      mysql:
+        image: mysql:9.2
+        env:
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Start services
+        run: docker compose up -d ganache
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: "1.25.0"
+          cache-dependency-path: backend/go.sum
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Install sql-migrate
+        run: go install github.com/rubenv/sql-migrate/sql-migrate@latest
+
+      - name: Configure dbconfig.yml for CI
+        run: sed -i 's/tcp(nft-mysql_test)/tcp(127.0.0.1:3306)/g' ../database/dbconfig.yml
+
+      - name: Run database migration for test
+        run: |
+          cd ../database
+          sql-migrate up -env="test"
+
+      - name: Run tests
+        run: go test -v ./...

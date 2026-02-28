@@ -1,0 +1,37 @@
+{
+  "recommendations": [
+    // 必須級
+    "golang.go", // Go (公式拡張機能: ビルド/デバッグ/補完)
+    "dbaeumer.vscode-eslint", // ESLint (JavaScript/TypeScriptの静的解析)
+    "esbenp.prettier-vscode", // Prettier (コードフォーマッター)
+    "bradlc.vscode-tailwindcss", // Tailwind CSS (クラス名補完/ホバー表示)
+    "juanblanco.solidity", // Solidity (スマートコントラクト開発支援)
+
+    // あると便利
+    "maxdavidwow.remix-light", // Remix (Solidity開発/デプロイ支援)
+    "dsznajder.es7-react-js-snippets", // ES7+ React/Redux/React-Native/JS snippets (コードスニペット)
+    "yoavbls.pretty-ts-errors", // Pretty TS Errors (TypeScriptのエラーメッセージを見やすく)
+
+    // ドキュメント補助
+    "yzhang.markdown-all-in-one", // Markdown All in One (プレビューや入力支援)
+    "bierner.markdown-mermaid", // Markdown Mermaid (フローチャート等の作図)
+    "redhat.vscode-yaml", // YAML (docker-compose等の色付け・検証)
+    "mikestead.dotenv", // DotENV (.envファイルの色付け)
+
+    // Github関連
+    "github.vscode-pull-request-github",
+    "github.vscode-github-actions",
+    "github.github-vscode-theme", // GitHub Theme (配色テーマ)
+    "mhutchie.git-graph", // Git Graph (コミット履歴の可視化)
+
+    // AI駆動開発
+    "saoudrizwan.claude-dev", // Claude Dev (自律型AIコーディングエージェント)
+
+    // その他
+    "ms-ceintl.vscode-language-pack-ja", // 日本語化パック
+    "pkief.material-icon-theme",
+    "alefragnani.bookmarks",
+    "gruntfuggly.todo-tree",
+    "k--kato.intellij-idea-keybindings" // IntelliJ IDEA Keybindings (キー操作をPHPStorm風に)
+  ]
+}

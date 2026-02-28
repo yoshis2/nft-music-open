@@ -1,0 +1,16 @@
+.openspec/
+.clinerules/
+.gemini/
+
+.vscode/
+.github/
+.git/
+
+logs/
+
+.dockerignore
+.gitignore
+.DS_Store
+
+CLINE.md
+README.md

@@ -1,0 +1,15 @@
+
+development:
+    dialect: mysql
+    dir: migrations
+    datasource: ${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(nft-mysql)/${MYSQL_DATABASE}?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true
+
+test:
+    dialect: mysql
+    dir: migrations-test
+    datasource: ${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(nft-mysql_test)/${MYSQL_DATABASE}?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true
+
+production:
+    dialect: mysql
+    dir: migrations
+    datasource: ${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(nft-mysql)/${MYSQL_DATABASE}?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true

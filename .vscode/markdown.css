@@ -1,0 +1,141 @@
+/* =========================================
+   ベース設定（ダークモード強制解除・白背景化）
+   ========================================= */
+body {
+    background-color: #ffffff !important;
+    color: #24292f !important; /* 真っ黒すぎない読みやすいグレー */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif !important;
+    font-size: 16px;
+    line-height: 1.6; /* 行間を広げて読みやすく */
+    padding: 2rem 3rem !important; /* 周囲に余白を持たせる */
+    max-width: 900px; /* 横に広がりすぎないように幅を制限 */
+    margin: 0 auto; /* 中央寄せ */
+}
+
+/* =========================================
+   見出し (H1, H2...)
+   ========================================= */
+h1 {
+    font-size: 2em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #eaecef; /* 下線を入れる */
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    font-size: 1.5em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #eaecef;
+    margin-top: 2em; /* H2の上は少し広めに */
+    margin-bottom: 1em;
+}
+
+h3 {
+    font-size: 1.25em;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* =========================================
+   リンク・強調
+   ========================================= */
+a {
+    color: #0969da !important;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+strong {
+    color: #24292f;
+    font-weight: 600;
+}
+
+/* =========================================
+   コードブロック & インラインコード
+   ========================================= */
+/* 文中の `code` */
+:not(pre) > code {
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: #f6f8fa !important;
+    border-radius: 6px;
+    color: #d1242f !important; /* 赤系で見やすく */
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+/* コードブロック (```) */
+pre {
+    background-color: #f6f8fa !important;
+    border-radius: 6px;
+    padding: 16px;
+    overflow: auto;
+    line-height: 1.45;
+}
+pre code {
+    background-color: transparent !important; /* preの中のcodeは背景透明 */
+    color: #24292f !important;
+}
+
+/* =========================================
+   引用 (Blockquote)
+   ========================================= */
+blockquote {
+    padding: 0 1em;
+    color: #57606a !important;
+    border-left: 0.25em solid #d0d7de; /* 左側に灰色のバー */
+    background-color: transparent !important;
+    margin: 1.5em 0;
+}
+
+/* =========================================
+   表 (Table) - 縞模様スタイル
+   ========================================= */
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow: auto;
+    margin-top: 0.8em;
+    margin-bottom: 1.5em;
+}
+
+tr {
+    background-color: #ffffff !important;
+    border-top: 1px solid #d8dee4;
+}
+
+/* 偶数行だけ色を変える（ゼブラストライプ） */
+tr:nth-child(2n) {
+    background-color: #f6f8fa !important;
+}
+
+th, td {
+    padding: 6px 13px;
+    border: 1px solid #d0d7de;
+}
+
+th {
+    font-weight: 600;
+    background-color: #f6f8fa !important; /* ヘッダー背景 */
+}
+
+/* =========================================
+   リスト・画像
+   ========================================= */
+ul, ol {
+    padding-left: 2em;
+}
+
+img {
+    max-width: 100%;
+    box-sizing: content-box;
+    background-color: #ffffff;
+    border-radius: 4px; /* 角を少し丸める */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* ほんのり影をつける */
+}

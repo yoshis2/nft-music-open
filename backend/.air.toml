@@ -1,0 +1,25 @@
+# Config file for [Air](https://github.com/air-verse/air) in TOML format.
+
+[build]
+  root = "."
+  tmp_dir = "../docker/tmp"
+
+  # 1. ビルドして 'tmp/app' を作成
+  cmd = "go build -gcflags='all=-N -l' -o ../docker/tmp/app ."
+
+  # 2. Airが監視するバイナリの場所（entrypointではなくbin推奨）
+  bin = "../docker/tmp/app"
+
+  # 3. Delveも 'tmp/app' を実行するように修正！
+  full_bin = "sh -c 'while true; do dlv exec ../docker/tmp/app --headless --listen=:5050 --api-version=2 --accept-multiclient --continue; sleep 1; done'"
+
+  include_ext = ["go", "tpl", "tmpl", "yml", "yaml", "html"]
+  exclude_dir = ["vendor", ".circleci", "tmp", "logs", "database"]
+  delay = 1000
+  stop_on_error = true
+
+[log]
+  time = true
+
+[misc]
+  cleanup_on_exit = true

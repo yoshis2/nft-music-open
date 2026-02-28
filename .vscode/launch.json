@@ -1,0 +1,94 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // -------------------------------------------------
+    // 1. Frontend: Client (Chrome)
+    // -------------------------------------------------
+    {
+      "name": "Frontend Next.js: Client (Brave)",
+      "type": "chrome",
+      "request": "launch",
+      "runtimeExecutable": "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/frontend",
+      "sourceMaps": true,
+      "userDataDir": "${workspaceFolder}/.vscode/chrome",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/frontend/**",
+        "!**/node_modules/**"
+      ],
+      "sourceMapPathOverrides": {
+        "webpack://_N_E/*": "${webRoot}/*",
+        "/nft-music/*": "${webRoot}/*",
+        "webpack:///*": "${webRoot}/*"
+      },
+      "presentation": {
+        "hidden": true
+      }
+    },
+    // -------------------------------------------------
+    // 2. Frontend: Server (Node.js - API/SSR)
+    // -------------------------------------------------
+    {
+      "name": "Frontend Next.js: Server (Node)",
+      "type": "node",
+      "request": "attach",
+      "port": 9230, // ★正解: package.json(9229) + 1 = 9230
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}/frontend",
+      "remoteRoot": "/nft-music",
+      "restart": true,
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack://_N_E/*": "${localRoot}/*",
+        "webpack://nft-music/*": "${localRoot}/*",
+        "webpack:///*": "${localRoot}/*"
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**",
+        "**/next/dist/**",
+        "**/app-page.runtime.dev.js"
+      ],
+      "presentation": {
+        "hidden": true
+      }
+    },
+    // -------------------------------------------------
+    // 3. Backend: Golang (API)
+    // -------------------------------------------------
+    {
+      "name": "Backend Golang Docker Container",
+      "type": "go",
+      "request": "attach",
+      "mode": "remote",
+      "port": 5050,
+      "host": "127.0.0.1",
+      "showLog": true,
+      "trace": "verbose",
+      "substitutePath": [
+        {
+          "from": "${workspaceFolder}/backend",
+          "to": "/go/src/nft-music/backend"
+        }
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack Debug",
+      "configurations": [
+        "Frontend Next.js: Client (Brave)",
+        "Frontend Next.js: Server (Node)",
+        "Backend Golang Docker Container"
+      ]
+    },
+    {
+      "name": "Frontend Stack Debug",
+      "configurations": [
+        "Frontend Next.js: Client (Brave)",
+        "Frontend Next.js: Server (Node)"
+      ]
+    }
+  ]
+}

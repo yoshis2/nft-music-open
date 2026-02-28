@@ -1,0 +1,92 @@
+{
+  // --- 基本設定 ---
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "vscode-edge-devtools.webhint": false,
+
+  // --- フロントエンド (Next.js / TypeScript) ---
+  "typescript.tsdk": "frontend/node_modules/typescript/lib",
+  "css.lint.unknownAtRules": "ignore",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // --- バックエンド (Golang) ---
+  "[go]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "golang.go",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    }
+  },
+  "go.lintTool": "golangci-lint",
+  "go.useLanguageServer": true,
+  "go.inlayHints.functionTypeParameters": true,
+  "go.inlayHints.parameterNames": true,
+  "go.inlayHints.constantValues": true,
+  "go.inlayHints.assignVariableTypes": true,
+  "gopls": {
+    "formatting.gofumpt": true,
+    "usePlaceholders": true,
+    "staticcheck": true,
+    "completeUnimported": true,
+    "deepCompletion": true
+  },
+  "go.delveConfig": {
+    "dlvLoadConfig": {
+      "followPointers": true,
+      "maxVariableRecurse": 1,
+      "maxStringLen": 10000,
+      "maxArrayValues": 500,
+      "maxStructFields": -1
+    },
+    "dlvFlags": []
+  },
+  "go.testEnvFile": "${workspaceFolder}/.env.test",
+
+  // --- Solidity (Smart Contract) ---
+  "[solidity]": {
+    "editor.defaultFormatter": "JuanBlanco.solidity"
+  },
+  "solidity.remappings": [
+    "@openzeppelin/=frontend/node_modules/@openzeppelin/"
+  ],
+
+  // --- Docker 設定 (ここを追加) ---
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-containers"
+  },
+
+  // --- その他ファイル設定 ---
+  "files.associations": {
+    "*.Dockerfile": "dockerfile",
+    "*.air.toml": "toml"
+  },
+
+  // --- 除外設定 ---
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": false,
+    "**/.next": true
+  },
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  },
+  "markdown.styles": ["./.vscode/markdown.css"]
+}

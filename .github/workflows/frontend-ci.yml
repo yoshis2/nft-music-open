@@ -1,0 +1,54 @@
+name: Frontend CI
+
+# main, developブランチへのpushまたはプルリクエストで発火
+on:
+  push:
+    branches: ["main", "develop"]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-ci.yml"
+  pull_request:
+    branches: ["main", "develop"]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-ci.yml"
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      # 1. コードのチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. 言語のセットアップ (例: Node.js)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          # cache: "yarn"
+          # cache-dependency-path: frontend/yarn.lock
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      # 3. Corepackの有効化 (Yarn Berryを使うため)
+      - name: Enable Corepack
+        run: corepack enable
+
+      # 5. 依存関係のインストール
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      # 6. Lintの実行
+      - name: Run Lint
+        run: yarn lint
+
+      # 7. テストの実行
+      - name: Run Tests
+        env:
+          BACKEND_HOST: "http://backend:1323"
+        run: yarn test:run

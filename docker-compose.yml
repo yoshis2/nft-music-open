@@ -1,0 +1,119 @@
+services:
+  frontend:
+    image: nft-marketplace
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    working_dir: /nft-music
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - ./frontend:/nft-music
+      - ./frontend/node_modules:/nft-music/node_modules
+    restart: always
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+      - "9230:9230"
+    command: "yarn dev"
+    env_file:
+      - .env
+  backend:
+    image: nft-music-backend
+    container_name: nft-music-backend
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - "./backend:/go/src/nft-music/backend"
+      - "./database:/go/src/nft-music/database"
+      - "./docker:/go/src/nft-music/docker"
+      - "./logs:/go/src/nft-music/logs"
+    restart: always
+    ports:
+      - "1323:1323"
+      - "5050:5050" #delve用のポート
+    privileged: true # Delveで必要なので付与します。セキュリティ面から本番環境では使うべきではありません。
+    command: >
+      bash -c "chmod +x ../docker/startup.sh &&
+      ../docker/startup.sh"
+    environment:
+      GO_ENV: develop
+    env_file:
+      - .env # sql-migrate用
+    healthcheck:
+      # バックエンドの適当なAPI（またはSwaggerなど）にリクエストを送って確認します。
+      # ※ もし curl がコンテナに入っていない場合は、下記を "wget --no-verbose --tries=1 --spider http://localhost:1323/api/v1/businesses || exit 1" などに変更してください
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:1323/api/v1/businesses || exit 1",
+        ]
+      interval: 5s # 5秒間隔でチェック
+      timeout: 5s # 5秒応答がなければ失敗とみなす
+      retries: 10 # 10回失敗したらUnhealthyとみなす
+      start_period: 15s # 最初の15秒間は起動中とみなして失敗をカウントしない
+  mysql:
+    image: mysql:9.2
+    container_name: nft-mysql
+    volumes:
+      - mysql-local:/var/lib/mysql
+      - ./database/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "23306:3306"
+  mysql-test:
+    image: mysql:9.2
+    container_name: nft-mysql_test
+    volumes:
+      - mysql-test:/var/lib/mysql
+      - ./database/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "33306:3306"
+  ganache:
+    image: trufflesuite/ganache:latest
+    platform: linux/amd64
+    volumes:
+      - ".:/usr/src/app"
+      - ganache:/data
+    restart: always
+    working_dir: /usr/src/app
+    ports:
+      - "8545:8545" # local EVM blockchain
+    stdin_open: true
+    command:
+      - --db=/data
+      - -m relax notable trophy asset motor airport deal gain kidney aerobic ski poem
+  solc:
+    image: ethereum/solc:stable
+    platform: linux/amd64
+    volumes:
+      - "./frontend:/usr/src/app"
+      - "./backend:/usr/src/contract"
+    working_dir: /usr/src/app
+  ipfs:
+    image: ipfs/go-ipfs
+    ports:
+      - "4001:4001/tcp"
+      - "4001:4001/udp"
+      - "5001:5001" # IPFS API Port
+      - "8080:8080" # IPFS Gateway Port
+    restart: always
+    volumes:
+      - ipfs_data:/data/ipfs
+    command: ["daemon", "--migrate=true"]
+volumes:
+  mysql-local:
+  mysql-test:
+  ganache:
+  ipfs_data:

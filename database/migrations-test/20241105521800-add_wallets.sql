@@ -1,0 +1,5 @@
+
+-- +migrate Up
+INSERT INTO wallets VALUES('0192fe69-3de0-7465-ab55-ad1476f83130','0x884A3d4a6a09be8EAC4e0e2E5CfbbE968f63B448', '2024-11-06 11:30:00');
+-- +migrate Down
+DELETE FROM wallets WHERE id = '0192fe69-3de0-7465-ab55-ad1476f83130';
